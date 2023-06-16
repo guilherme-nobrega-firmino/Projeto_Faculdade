@@ -1,0 +1,144 @@
+package Projeto_A3;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Principal {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("Seja bem-vindo!");
+
+		ArrayList<Empresa> listaEmpresas = new ArrayList<>();
+		
+		boolean acesso = true;
+
+		while (acesso) {
+
+			System.out.println("\nSelecione uma das opções: " 
+					+ "\n1-Adicionar nova empresa." 
+					+ "\n2-Remover empresa."
+					+ "\n3-Atualizar cadastro." 
+					+ "\n4-Exibir lista de empresas." 
+					+ "\n5-Sair.");
+			String input = sc.nextLine();
+
+			switch (input) {
+
+			// Este primeiro case, é responsável por adicionar uma empresa.
+			case "1":
+				boolean continuarCadastro = true;
+
+				while (continuarCadastro) {
+					System.out.println("\nRealize seu Cadastro:");
+
+					System.out.println("\nCadaste o CNPJ:");
+					String cnpj = sc.nextLine();
+					System.out.println("\nCadaste o Nome da empresa:");
+					String nomeEmpresa = sc.nextLine();
+					System.out.println("\nCadaste o Diretor:");
+					String diretor = sc.nextLine();
+					System.out.println("\nCadaste o Endereço:");
+					String endereco = sc.nextLine();
+					System.out.println("\nCadaste o E-mail:");
+					String email = sc.nextLine();
+					System.out.println("\nCadaste o Telefone:");
+					String telefone = sc.nextLine();
+
+					Empresa empresa = new Empresa(cnpj, nomeEmpresa, diretor, endereco, email, telefone);
+
+					listaEmpresas.add(empresa);
+
+					System.out.println("\nCadastro realizado com sucesso!");
+
+					System.out.println("\nDeseja realizar outro cadastro? (S/N)");
+					String resposta = sc.nextLine();
+
+					if (resposta.equalsIgnoreCase("N")) {
+						continuarCadastro = false;
+					}
+				}
+				break;
+
+			// Este segundo case, irá remover uma empresa.
+			case "2":
+				System.out.println("\nDigite o CNPJ da empresa que deseja remover:");
+				String cnpjRemover = sc.nextLine();
+
+				boolean empresaRemovida = false;
+
+				for (int i = 0; i < listaEmpresas.size(); i++) {
+					if (listaEmpresas.get(i).getCnpj().equals(cnpjRemover)) {
+						listaEmpresas.remove(i);
+						empresaRemovida = true;
+						break;
+					}
+				}
+
+				if (empresaRemovida) {
+					System.out.println("\nEmpresa removida com sucesso!");
+				} else {
+					System.out.println("\nEmpresa não encontrada. Nenhum cadastro removido.");
+				}
+				break;
+
+			// Este terceiro case, irá atualizar os dados de determinada empresa.
+			case "3":
+				System.out.println("\nDigite o CNPJ da empresa que deseja atualizar:");
+				String cnpjAtualizar = sc.nextLine();
+
+				Empresa empresaAtualizar = null;
+
+				for (Empresa empresa : listaEmpresas) {
+					if (empresa.getCnpj().equals(cnpjAtualizar)) {
+						empresaAtualizar = empresa;
+						break;
+					}
+				}
+
+				if (empresaAtualizar != null) {
+					System.out.println("\nAtualize os dados da empresa:");
+
+					System.out.println("\nDigite o novo Nome da empresa:");
+					String novoNome = sc.nextLine();
+					System.out.println("\nDigite o novo Diretor:");
+					String novoDiretor = sc.nextLine();
+					System.out.println("\nDigite o novo Endereço:");
+					String novoEndereco = sc.nextLine();
+					System.out.println("\nDigite o novo E-mail:");
+					String novoEmail = sc.nextLine();
+					System.out.println("\nDigite o novo Telefone:");
+					String novoTelefone = sc.nextLine();
+
+					empresaAtualizar.setNomeEmpresa(novoNome);
+					empresaAtualizar.setDiretor(novoDiretor);
+					empresaAtualizar.setEndereco(novoEndereco);
+					empresaAtualizar.setE_mail(novoEmail);
+					empresaAtualizar.setTelefone(novoTelefone);
+
+					System.out.println("\nDados atualizados com sucesso!");
+				} else {
+					System.out.println("\nEmpresa não encontrada. Nenhum dado atualizado.");
+				}
+				break;
+
+			// Este quarto case, irá listar todas as empresas cadastradas.
+			case "4":
+				System.out.println("\nDados das Empresas cadastradas:");
+
+				for (Empresa empresa : listaEmpresas) {
+					System.out.println(empresa.retorno());
+				}
+				break;
+
+			// O default irá sair do sistema.
+			default:
+				acesso = false;
+				System.out.println("Obrigado e até logo.");
+
+			}
+		}
+		
+		sc.close();
+	}
+}
