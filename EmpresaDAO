@@ -13,13 +13,11 @@ import Model.Empresa;
 public class EmpresaDAO {
 	private ConnectionFactory connection;
 
-  //Método responsável por estabelecer a conexão.
 	public EmpresaDAO() {
 		this.connection = new ConnectionFactory();
 	}
 
-  //Método responsável por salvar empresa.
-	public void salvarEditora(Empresa empresa) {
+	public void salvarEmpresa(Empresa empresa) {
 		String sql = "INSERT INTO empresa (cnpj, nome, gerente, endereco, email, telefone, area_de_atuacao) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 		Connection conn = connection.conexao();
@@ -56,7 +54,6 @@ public class EmpresaDAO {
 		}
 	}
 
-  //Método responsável por listar empresas.
 	public List<Empresa> listarEmpresa() {
 		List<Empresa> empresas = new ArrayList<Empresa>();
 		Connection conn = connection.conexao();
@@ -86,9 +83,8 @@ public class EmpresaDAO {
 		return empresas;// retorna a lista
 
 	}
-  
-  //Método responsável por buscar empresa.
-	public Empresa buscarEditora(Integer cnpj) {
+
+	public Empresa buscarEmpresa(Integer cnpj) {
 	    Empresa empresa = null; // Inicializa como null para representar que nenhuma empresa foi encontrada
 	    Connection conn = connection.conexao();
 
@@ -117,7 +113,7 @@ public class EmpresaDAO {
 	    return empresa;
 	}
 
-  //Método responsável por alterar os dados da empresa.
+
 	public void alterarEmpresa(Empresa empresa) {
 		Connection conn = connection.conexao();
 		try {
@@ -140,8 +136,7 @@ public class EmpresaDAO {
 		}
 
 	}
-  
-  //Método responsável por excluir empresa.
+
 	public Empresa excluirEmpresa(int cnpj) {
 		Empresa empresa = new Empresa();
 		Connection conn = connection.conexao();
