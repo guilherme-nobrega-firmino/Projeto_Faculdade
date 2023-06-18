@@ -1,33 +1,29 @@
-package Projeto_A3;
+package Model;
 
 public class Empresa {
 
-	private String cnpj;
+	private Integer cnpj;
 	private String nomeEmpresa;
-	private String diretor;
+	private String gerente;
 	private String endereco;
 	private String e_mail;
-	private String telefone;
+	private Integer telefone;
+	private String areaDeAtuacao;
 
 	public Empresa() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Empresa(String cnpj, String nomeEmpresa, String diretor, String endereco, String e_mail, String telefone) {
-		this.cnpj = cnpj;
-		this.nomeEmpresa = nomeEmpresa;
-		this.diretor = diretor;
-		this.endereco = endereco;
-		this.e_mail = e_mail;
-		this.telefone = telefone;
-	}
-
-	public String getCnpj() {
-		return cnpj;
-	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+	@Override
+	public String toString() {
+		return "\nEmpresa "
+				+ "\nCNPJ: " + cnpj 
+				+ "\nNome da Empresa: " + nomeEmpresa 
+				+ "\nGerente: " + gerente 
+				+ "\nEndereço: "	+ endereco 
+				+ "\nE_mail: " + e_mail 
+				+ "\nTelefone: " + telefone 
+				+ "\nArea de Atuação: " + areaDeAtuacao;
 	}
 
 	public String getNomeEmpresa() {
@@ -36,14 +32,6 @@ public class Empresa {
 
 	public void setNomeEmpresa(String nomeEmpresa) {
 		this.nomeEmpresa = nomeEmpresa;
-	}
-
-	public String getDiretor() {
-		return diretor;
-	}
-
-	public void setDiretor(String diretor) {
-		this.diretor = diretor;
 	}
 
 	public String getEndereco() {
@@ -61,12 +49,36 @@ public class Empresa {
 	public void setE_mail(String e_mail) {
 		this.e_mail = e_mail;
 	}
+	
+	public String getAreaDeAtuacao() {
+		return areaDeAtuacao;
+	}
 
-	public String getTelefone() {
+	public void setAreaDeAtuacao(String areaDeAtuacao) {
+		this.areaDeAtuacao = areaDeAtuacao;
+	}
+	
+	public String getGerente() {
+		return gerente;
+	}
+
+	public void setGerente(String gerente) {
+		this.gerente = gerente;
+	}
+
+	public Integer getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(Integer cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public Integer getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(String telefone) {
+	public void setTelefone(Integer telefone) {
 		this.telefone = telefone;
 	}
 
@@ -74,9 +86,10 @@ public class Empresa {
 		return "\nDados:" +
 	"\ncnpj: " + getCnpj() + 
 	"\nNome da empresa: " + getNomeEmpresa() + 
-	"\nDiretor: " + getDiretor() + 
+	"\nGerente: " + getGerente() + 
 	"\nEndereço: " + getEndereco() + 
 	"\nE-mail: " + getE_mail() + 
-	"\nTelefone: " + getTelefone();
+	"\nTelefone: " + getTelefone() +
+	"\nArea de Atuação: " + getAreaDeAtuacao();
 	}
 }
