@@ -60,7 +60,7 @@ public class PrincipalA3 {
 					System.out.println("\nCadaste a Area de Atuação:");
 					empresa.setAreaDeAtuacao(sc.nextLine());
 
-					emDAO.salvarEditora(empresa);
+					emDAO.salvarEmpresa(empresa);
 
 					System.out.println("\nCadastro realizado com sucesso!");
 
@@ -133,7 +133,7 @@ public class PrincipalA3 {
 				System.out.println("\nInsira o CNPJ da empresa que deseja buscar: ");
 				Integer cnpj = sc.nextInt();
 				sc.nextLine();
-				Empresa empres = emDAO.buscarEditora(cnpj);
+				Empresa empres = emDAO.buscarEmpresa(cnpj);
 
 				if (empres != null) {
 				    System.out.println("\nCNPJ: " + empres.getCnpj());
