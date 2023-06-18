@@ -1,0 +1,160 @@
+package DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import Conexao.ConnectionFactory;
+import Model.Empresa;
+
+public class EmpresaDAO {
+	private ConnectionFactory connection;
+
+  //Método responsável por estabelecer a conexão.
+	public EmpresaDAO() {
+		this.connection = new ConnectionFactory();
+	}
+
+  //Método responsável por salvar empresa.
+	public void salvarEditora(Empresa empresa) {
+		String sql = "INSERT INTO empresa (cnpj, nome, gerente, endereco, email, telefone, area_de_atuacao) VALUES(?, ?, ?, ?, ?, ?, ?)";
+
+		Connection conn = connection.conexao();
+		try {
+			conn.setAutoCommit(false); // Definir autocommit como false antes de executar a inserção
+
+			PreparedStatement prepareStatement = conn.prepareStatement(sql);
+
+			prepareStatement.setLong(1, empresa.getCnpj());
+			prepareStatement.setString(2, empresa.getNomeEmpresa());
+			prepareStatement.setString(3, empresa.getGerente());
+			prepareStatement.setString(4, empresa.getEndereco());
+			prepareStatement.setString(5, empresa.getE_mail());
+			prepareStatement.setLong(6, empresa.getTelefone());
+			prepareStatement.setString(7, empresa.getAreaDeAtuacao());
+
+			prepareStatement.execute();
+
+			conn.commit(); // Realizar o commit após a execução bem-sucedida
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				conn.setAutoCommit(true); // Restaurar o autocommit para true no final
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+  //Método responsável por listar empresas.
+	public List<Empresa> listarEmpresa() {
+		List<Empresa> empresas = new ArrayList<Empresa>();
+		Connection conn = connection.conexao();
+		try {
+			String sql = "SELECT * FROM empresa";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet resultado = statement.executeQuery();
+
+			while (resultado.next()) {
+				Empresa empresa = new Empresa();
+
+				empresa.setCnpj(resultado.getInt("cnpj"));
+				empresa.setNomeEmpresa(resultado.getString("nome"));
+				empresa.setGerente(resultado.getString("gerente"));
+				empresa.setEndereco(resultado.getString("endereco"));
+				empresa.setE_mail(resultado.getString("email"));
+				empresa.setTelefone(resultado.getInt("telefone"));
+				empresa.setAreaDeAtuacao(resultado.getString("area_de_atuacao"));
+
+				empresas.add(empresa);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return empresas;// retorna a lista
+
+	}
+  
+  //Método responsável por buscar empresa.
+	public Empresa buscarEditora(Integer cnpj) {
+	    Empresa empresa = null; // Inicializa como null para representar que nenhuma empresa foi encontrada
+	    Connection conn = connection.conexao();
+
+	    try {
+	        String sql = "SELECT * FROM empresa WHERE cnpj = ? ";
+
+	        PreparedStatement prepareStatement = conn.prepareStatement(sql);
+
+	        prepareStatement.setInt(1, cnpj);
+	        ResultSet resultado = prepareStatement.executeQuery();
+
+	        if (resultado.next()) {
+	            empresa = new Empresa();
+	            empresa.setCnpj(resultado.getInt("cnpj"));
+	            empresa.setNomeEmpresa(resultado.getString("nome"));
+	            empresa.setGerente(resultado.getString("gerente"));
+	            empresa.setEndereco(resultado.getString("endereco"));
+	            empresa.setE_mail(resultado.getString("email"));
+	            empresa.setTelefone(resultado.getInt("telefone"));
+	            empresa.setAreaDeAtuacao(resultado.getString("area_de_atuacao"));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return empresa;
+	}
+
+  //Método responsável por alterar os dados da empresa.
+	public void alterarEmpresa(Empresa empresa) {
+		Connection conn = connection.conexao();
+		try {
+			String sql = "Update empresa set nome =	?, gerente = ?, endereco = ?, email = ?, telefone = ?, area_de_atuacao = ? where cnpj = ?";
+
+			PreparedStatement prepareStatement = conn.prepareStatement(sql);
+
+			prepareStatement.setInt(7, empresa.getCnpj());
+			prepareStatement.setString(1, empresa.getNomeEmpresa());
+			prepareStatement.setString(2, empresa.getGerente());
+			prepareStatement.setString(3, empresa.getEndereco());
+			prepareStatement.setString(4, empresa.getE_mail());
+			prepareStatement.setInt(5, empresa.getTelefone());
+			prepareStatement.setString(6, empresa.getAreaDeAtuacao());
+
+			prepareStatement.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+  
+  //Método responsável por excluir empresa.
+	public Empresa excluirEmpresa(int cnpj) {
+		Empresa empresa = new Empresa();
+		Connection conn = connection.conexao();
+		try {
+			String sql = "Delete from empresa where	cnpj = ? ";
+			PreparedStatement prepareStatement = conn.prepareStatement(sql);
+			prepareStatement.setLong(1, cnpj);
+			prepareStatement.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return empresa;
+	}
+
+}
