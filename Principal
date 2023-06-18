@@ -1,16 +1,19 @@
-package Projeto_A3;
+package Principal;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class Principal {
+import DAO.EmpresaDAO;
+import Model.Empresa;
+
+public class PrincipalA3 {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
+		EmpresaDAO emDAO = new EmpresaDAO();
+		Empresa empresa = new Empresa();
 
 		System.out.println("Seja bem-vindo!");
 
-		ArrayList<Empresa> listaEmpresas = new ArrayList<>();
-		
 		boolean acesso = true;
 
 		while (acesso) {
@@ -20,34 +23,44 @@ public class Principal {
 					+ "\n2-Remover empresa."
 					+ "\n3-Atualizar cadastro." 
 					+ "\n4-Exibir lista de empresas." 
-					+ "\n5-Sair.");
+					+ "\n5-Buscar Empresa.");
 			String input = sc.nextLine();
 
 			switch (input) {
 
 			// Este primeiro case, é responsável por adicionar uma empresa.
 			case "1":
+
 				boolean continuarCadastro = true;
 
 				while (continuarCadastro) {
+
 					System.out.println("\nRealize seu Cadastro:");
 
 					System.out.println("\nCadaste o CNPJ:");
-					String cnpj = sc.nextLine();
+					empresa.setCnpj(sc.nextInt());
+					sc.nextLine();
+
 					System.out.println("\nCadaste o Nome da empresa:");
-					String nomeEmpresa = sc.nextLine();
-					System.out.println("\nCadaste o Diretor:");
-					String diretor = sc.nextLine();
+					empresa.setNomeEmpresa(sc.nextLine());
+
+					System.out.println("\nCadaste o Gerente:");
+					empresa.setGerente(sc.nextLine());
+
 					System.out.println("\nCadaste o Endereço:");
-					String endereco = sc.nextLine();
+					empresa.setEndereco(sc.nextLine());
+
 					System.out.println("\nCadaste o E-mail:");
-					String email = sc.nextLine();
+					empresa.setE_mail(sc.nextLine());
+
 					System.out.println("\nCadaste o Telefone:");
-					String telefone = sc.nextLine();
+					empresa.setTelefone(sc.nextInt());
+					sc.nextLine();
 
-					Empresa empresa = new Empresa(cnpj, nomeEmpresa, diretor, endereco, email, telefone);
+					System.out.println("\nCadaste a Area de Atuação:");
+					empresa.setAreaDeAtuacao(sc.nextLine());
 
-					listaEmpresas.add(empresa);
+					emDAO.salvarEditora(empresa);
 
 					System.out.println("\nCadastro realizado com sucesso!");
 
@@ -62,83 +75,82 @@ public class Principal {
 
 			// Este segundo case, irá remover uma empresa.
 			case "2":
-				System.out.println("\nDigite o CNPJ da empresa que deseja remover:");
-				String cnpjRemover = sc.nextLine();
 
-				boolean empresaRemovida = false;
+				System.out.println("\nInforme o cnpj da empresa que deseja deletar: ");
+				int valor1 = sc.nextInt();
+				sc.nextLine();
+				empresa = emDAO.excluirEmpresa(valor1);
 
-				for (int i = 0; i < listaEmpresas.size(); i++) {
-					if (listaEmpresas.get(i).getCnpj().equals(cnpjRemover)) {
-						listaEmpresas.remove(i);
-						empresaRemovida = true;
-						break;
-					}
-				}
-
-				if (empresaRemovida) {
-					System.out.println("\nEmpresa removida com sucesso!");
-				} else {
-					System.out.println("\nEmpresa não encontrada. Nenhum cadastro removido.");
-				}
+				System.out.println("\nEmpresa removida com sucesso!");
+				
 				break;
 
-			// Este terceiro case, irá atualizar os dados de determinada empresa.
+				// Este terceiro case, irá atualizar os dados de determinada empresa.
 			case "3":
+
 				System.out.println("\nDigite o CNPJ da empresa que deseja atualizar:");
-				String cnpjAtualizar = sc.nextLine();
+				empresa.setCnpj(sc.nextInt());
+				sc.nextLine();
+				
+				System.out.println("\nDigite o novo Nome da empresa:");
+				empresa.setNomeEmpresa(sc.nextLine());
+				
+				System.out.println("\nDigite o novo Gerente:");
+				empresa.setGerente(sc.nextLine());
+				
+				System.out.println("\nDigite o novo Endereço:");
+				empresa.setEndereco(sc.nextLine());
+				
+				System.out.println("\nDigite o novo E-mail:");
+				empresa.setE_mail(sc.nextLine());
+				
+				System.out.println("\nDigite o novo Telefone:");
+				empresa.setTelefone(sc.nextInt());
+				sc.nextLine();
+				
+				System.out.println("\nCadaste a nova Area de Atuação:");
+				empresa.setAreaDeAtuacao(sc.nextLine());
 
-				Empresa empresaAtualizar = null;
-
-				for (Empresa empresa : listaEmpresas) {
-					if (empresa.getCnpj().equals(cnpjAtualizar)) {
-						empresaAtualizar = empresa;
-						break;
-					}
-				}
-
-				if (empresaAtualizar != null) {
-					System.out.println("\nAtualize os dados da empresa:");
-
-					System.out.println("\nDigite o novo Nome da empresa:");
-					String novoNome = sc.nextLine();
-					System.out.println("\nDigite o novo Diretor:");
-					String novoDiretor = sc.nextLine();
-					System.out.println("\nDigite o novo Endereço:");
-					String novoEndereco = sc.nextLine();
-					System.out.println("\nDigite o novo E-mail:");
-					String novoEmail = sc.nextLine();
-					System.out.println("\nDigite o novo Telefone:");
-					String novoTelefone = sc.nextLine();
-
-					empresaAtualizar.setNomeEmpresa(novoNome);
-					empresaAtualizar.setDiretor(novoDiretor);
-					empresaAtualizar.setEndereco(novoEndereco);
-					empresaAtualizar.setE_mail(novoEmail);
-					empresaAtualizar.setTelefone(novoTelefone);
-
-					System.out.println("\nDados atualizados com sucesso!");
-				} else {
-					System.out.println("\nEmpresa não encontrada. Nenhum dado atualizado.");
-				}
+				emDAO.alterarEmpresa(empresa);
+				
+				System.out.println("Empresa atualizada com sucesso.");
+				
 				break;
 
-			// Este quarto case, irá listar todas as empresas cadastradas.
+				// Este quarto case, irá listar todas as empresas cadastradas.
 			case "4":
-				System.out.println("\nDados das Empresas cadastradas:");
+				List<Empresa> empresas = emDAO.listarEmpresa();
 
-				for (Empresa empresa : listaEmpresas) {
-					System.out.println(empresa.retorno());
+				for (Empresa emp : empresas) {
+					System.out.println(emp);
+					System.out.println("-------------------------------");
 				}
+				
 				break;
 
-			// O default irá sair do sistema.
+				// O default irá buscar uma empresa.
 			default:
-				acesso = false;
-				System.out.println("Obrigado e até logo.");
+				System.out.println("\nInsira o CNPJ da empresa que deseja buscar: ");
+				Integer cnpj = sc.nextInt();
+				sc.nextLine();
+				Empresa empres = emDAO.buscarEditora(cnpj);
 
-			}
-		}
-		
+				if (empres != null) {
+				    System.out.println("\nCNPJ: " + empres.getCnpj());
+				    System.out.println("Nome: " + empres.getNomeEmpresa());
+				    System.out.println("Gerente: " + empres.getGerente());
+				    System.out.println("Endereço: " + empres.getEndereco());
+				    System.out.println("E-mail: " + empres.getE_mail());
+				    System.out.println("Telefone: " + empres.getTelefone());
+				    System.out.println("Área de Atuação: " + empres.getAreaDeAtuacao());
+				} else {
+				    System.out.println("Empresa não encontrada.");
+				}
+
+				
+			}// switch-case
+		} // while de acesso
+
 		sc.close();
-	}
-}
+	}// main
+}// classe
